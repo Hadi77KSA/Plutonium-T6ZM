@@ -1,44 +1,50 @@
 init()
 {
-    level thread tranzit_richtofen_solo();
-    level thread onplayerconnect();
+	thread onPlayerConnect();
+	thread safety_light_power_off_listen();
+	thread safety_light_power_on_listen();
 }
 
-tranzit_richtofen_solo()
+onPlayerConnect()
 {
-    level endon( "end_game" );
-    self endon( "disconnect" );
-    level thread screecher_light_on_sq_solo();
+	for (;;)
+	{
+		level waittill( "connected", player );
 
-    while( 1 )
-    {
-        level waittill( "safety_light_power_off" );
-        wait 0.05;
-        if ( getPlayers().size <= 1 && level.sq_progress[ "rich" ][ "C_screecher_light" ] == 1 )
-        {
-            level.sq_progress[ "rich" ][ "C_screecher_light" ] += 2;
-        }
-    }
+		player iPrintLn( "^5TranZit Solo Richtofen Quest Loaded" );
+	}
 }
 
-screecher_light_on_sq_solo()
+safety_light_power_off_listen()
 {
-    while( 1 )
-    {
-        level waittill( "safety_light_power_on" );
-        wait 0.05;
-        if ( getPlayers().size <= 1 && level.sq_progress[ "rich" ][ "C_screecher_light" ] == 1 )
-        {
-            level.sq_progress[ "rich" ][ "C_screecher_light" ]++;
-        }
-    }
+	while ( true )
+	{
+		level waittill( "safety_light_power_off" );
+
+		thread safety_light_power_off_solo()
+	}
 }
 
-onplayerconnect()
+safety_light_power_on_listen()
 {
-    for(;;)
-    {
-        level waittill( "connected", player );
-        player iprintln( "^5TranZit Solo Quest Loaded" );
-    }
+	while ( true )
+	{
+		level waittill( "safety_light_power_on" );
+
+		thread safety_light_power_on_solo()
+	}
+}
+
+safety_light_power_off_solo()
+{
+		wait 0.05;
+		if ( getPlayers().size == 1 && level.sq_progress[ "rich" ][ "C_screecher_light" ] == 1 )
+			level.sq_progress[ "rich" ][ "C_screecher_light" ] += 2;
+}
+
+safety_light_power_on_solo()
+{
+		wait 0.05;
+		if ( getPlayers().size == 1 && level.sq_progress[ "rich" ][ "C_screecher_light" ] == 1 )
+			level.sq_progress[ "rich" ][ "C_screecher_light" ]++;
 }
