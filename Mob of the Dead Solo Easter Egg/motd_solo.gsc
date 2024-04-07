@@ -3,6 +3,19 @@
 
 init()
 {
+	if ( getdvarint( "sv_maxclients" ) < 2 )
+		setdvar( "sv_maxclients", "2" );
+	if ( getdvarint( "com_maxclients" ) < 2 )
+	{
+		setdvar( "com_maxclients", "2" );
+		print( "^3motd_solo.gsc requires using ^1map_restart^3 in the console to work properly" );
+		while ( true )
+		{
+			getPlayers()[0] iPrintLn( "^3motd_solo.gsc requires using ^1map_restart^3 in the console to work properly" );
+			wait 3;
+		}
+	}
+
 	thread motd_solo();
 }
 
@@ -15,7 +28,7 @@ motd_solo()
 		if ( getPlayers().size == 1 )
 		{
 			if ( getdvarint( "sv_maxclients" ) < 2 )
-				setdvar( "sv_maxclients", 2 );
+				setdvar( "sv_maxclients", "2" );
 			if ( getdvarint( "com_maxclients" ) < 2 )
 				setdvar( "com_maxclients", "2" );
 
