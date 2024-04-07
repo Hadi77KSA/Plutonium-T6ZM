@@ -8,8 +8,8 @@ init()
 
 motd_solo()
 {
-	//level waittill_multiple( "nixie_final_" + 386, "nixie_final_" + 481, "nixie_final_" + 101, "nixie_final_" + 872 );
-	level waittill( "say" );
+	level waittill_multiple( "nixie_final_" + 386, "nixie_final_" + 481, "nixie_final_" + 101, "nixie_final_" + 872 );
+
 	while ( true )
 	{
 		if ( getPlayers().size == 1 )
