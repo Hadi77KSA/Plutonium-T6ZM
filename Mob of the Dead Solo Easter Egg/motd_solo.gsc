@@ -3,18 +3,27 @@
 
 init()
 {
-	level thread motd_solo();
+	thread motd_solo();
 }
 
 motd_solo()
 {
 	level waittill_multiple( "nixie_final_" + 386, "nixie_final_" + 481, "nixie_final_" + 101, "nixie_final_" + 872 );
-	if (getPlayers().size == 1)
+
+	while ( true )
 	{
-		bot = addtestclient();
-		bot waittill("spawned_player");
-		wait_network_frame();
-		wait 3; //spawn protection
-		bot.ignoreme = 1;
+		if ( getPlayers().size == 1 )
+		{
+			if ( getdvarint( "com_maxclients" ) < 2 )
+				setdvar( "com_maxclients", "2" );
+
+			bot = addtestclient();
+			bot waittill( "spawned_player" );
+			wait_network_frame();
+			wait 3; //spawn protection
+			bot.ignoreme = 1;
+			break;
+		}
+		wait 5;
 	}
 }
