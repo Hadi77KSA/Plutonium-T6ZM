@@ -8,12 +8,9 @@ init()
 	if ( getdvarint( "com_maxclients" ) < 2 )
 	{
 		setdvar( "com_maxclients", "2" );
-		print( "^3motd_solo.gsc requires using ^1map_restart^3 in the console to work properly" );
-		while ( true )
-		{
-			getPlayers()[0] iPrintLn( "^3motd_solo.gsc requires using ^1map_restart^3 in the console to work properly" );
-			wait 3;
-		}
+		print( "^3motd_solo.gsc will restart the map" );
+		flag_wait( "initial_players_connected" );
+		cmdexec( "map_restart" );
 	}
 
 	thread motd_solo();
