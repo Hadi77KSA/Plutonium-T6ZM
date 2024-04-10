@@ -1,7 +1,7 @@
 #include common_scripts\utility;
 #include maps\mp\zombies\_zm_utility;
 
-init()
+main()
 {
 	if ( getdvarint( "sv_maxclients" ) < 2 )
 		setdvar( "sv_maxclients", "2" );
@@ -12,7 +12,10 @@ init()
 		flag_wait( "initial_players_connected" );
 		cmdexec( "map_restart" );
 	}
+}
 
+init()
+{
 	thread motd_solo();
 }
 
