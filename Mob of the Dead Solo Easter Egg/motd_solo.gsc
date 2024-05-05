@@ -37,7 +37,25 @@ motd_solo()
 			wait_network_frame();
 			wait 3; //spawn protection
 			bot.ignoreme = 1;
+			bot thread limit_afterlives();
 			break;
+		}
+		wait 5;
+	}
+}
+
+limit_afterlives()
+{
+	self endon( "disconnect" );
+	self endon( "_zombie_game_over" );
+	level endon( "stage_final" );
+
+	while ( true )
+	{
+		while ( self.lives > 1 )
+		{
+			self maps\mp\zombies\_zm_afterlife::afterlife_remove();
+			wait 1;
 		}
 		wait 5;
 	}
