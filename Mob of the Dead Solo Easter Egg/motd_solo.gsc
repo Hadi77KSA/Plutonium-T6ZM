@@ -5,10 +5,14 @@ main()
 {
 	if ( getdvarint( "sv_maxclients" ) < 2 )
 		setdvar( "sv_maxclients", "2" );
+
+	if ( getdvarint( "party_maxplayers" ) < 2 )
+		setdvar( "party_maxplayers", "2" );
+
 	if ( getdvarint( "com_maxclients" ) < 2 )
 	{
-		setdvar( "com_maxclients", "2" );
-		print( "^3motd_solo.gsc will restart the map" );
+		setdvar( "com_maxclients", getdvar( "party_maxplayers" ) );
+		println( "motd_solo.gsc will restart the map" );
 		flag_wait( "initial_players_connected" );
 		cmdexec( "map_restart" );
 	}
@@ -23,12 +27,13 @@ motd_solo()
 {
 	level waittill_multiple( "nixie_final_" + 386, "nixie_final_" + 481, "nixie_final_" + 101, "nixie_final_" + 872 );
 
-	while ( true )
+	for (;;)
 	{
 		if ( getPlayers().size == 1 )
 		{
 			if ( getdvarint( "sv_maxclients" ) < 2 )
 				setdvar( "sv_maxclients", "2" );
+
 			if ( getdvarint( "com_maxclients" ) < 2 )
 				setdvar( "com_maxclients", "2" );
 
@@ -40,6 +45,7 @@ motd_solo()
 			bot thread limit_afterlives();
 			break;
 		}
+
 		wait 5;
 	}
 }
@@ -50,13 +56,14 @@ limit_afterlives()
 	self endon( "_zombie_game_over" );
 	level endon( "stage_final" );
 
-	while ( true )
+	for (;;)
 	{
 		while ( self.lives > 1 )
 		{
 			self maps\mp\zombies\_zm_afterlife::afterlife_remove();
 			wait 1;
 		}
+
 		wait 5;
 	}
 }
